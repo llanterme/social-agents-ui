@@ -1,0 +1,103 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+/cypress/videos
+/cypress/screenshots
+/test-results/
+/playwright-report/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+*.pem
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Package manager lock files (if using different package managers)
+# yarn.lock
+# pnpm-lock.yaml
+
+# Generated documentation
+/docs/build/
+
+# Storybook build outputs
+storybook-static/
+
+# Capacitor
+/ios
+/android
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Sentry
+.sentryclirc
+
+# Local development files
+*.local.js
+*.local.ts
+*.local.json
+
+# AI/ML models or large data files
+*.model
+*.pkl
+/data/
+/models/

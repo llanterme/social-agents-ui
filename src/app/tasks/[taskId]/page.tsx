@@ -213,27 +213,40 @@ export default function TaskPage() {
                       <p className="text-sm text-muted-foreground">{result.topic}</p>
                     </div>
                     
-                    <div>
-                      <h5 className="font-medium text-sm">Platform & Tone:</h5>
-                      <p className="text-sm text-muted-foreground">
-                        {result.content.platform} • {result.content.tone}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h5 className="font-medium text-sm">Generated Content:</h5>
-                      <div className="bg-background p-3 rounded border text-sm">
-                        <p className="font-medium">{result.content.headline}</p>
-                        <p className="mt-2">{result.content.body}</p>
-                        {result.content.hashtags.length > 0 && (
-                          <p className="mt-2 text-blue-600">
-                            {result.content.hashtags.join(' ')}
-                          </p>
-                        )}
+                    {result.content && (
+                      <div>
+                        <h5 className="font-medium text-sm">Platform & Tone:</h5>
+                        <p className="text-sm text-muted-foreground">
+                          {result.content.platform} • {result.content.tone}
+                        </p>
                       </div>
-                    </div>
+                    )}
 
-                    {result.image.localImageUrls.length > 0 && (
+                    {result.content && (
+                      <div>
+                        <h5 className="font-medium text-sm">Generated Content:</h5>
+                        <div className="bg-background p-3 rounded border text-sm">
+                          {result.content.headline && (
+                            <p className="font-medium">{result.content.headline}</p>
+                          )}
+                          {result.content.body && (
+                            <p className="mt-2">{result.content.body}</p>
+                          )}
+                          {result.content.cta && (
+                            <p className="mt-2 text-sm font-medium text-primary">
+                              {result.content.cta}
+                            </p>
+                          )}
+                          {result.content.hashtags && result.content.hashtags.length > 0 && (
+                            <p className="mt-2 text-blue-600">
+                              {result.content.hashtags.join(' ')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {result.image && result.image.localImageUrls && result.image.localImageUrls.length > 0 && (
                       <div>
                         <h5 className="font-medium text-sm">Generated Images:</h5>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">

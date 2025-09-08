@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { 
   LayoutDashboard, 
@@ -9,17 +10,28 @@ import {
   FileText, 
   History, 
   Settings,
+  User,
   Twitter,
   Linkedin,
   Instagram,
   Globe
 } from 'lucide-react';
 
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
 const navigation = [
   {
     name: 'Dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
+  },
+  {
+    name: 'Profile',
+    href: '/profile',
+    icon: User,
   },
   {
     name: 'Generate Content',
@@ -61,11 +73,46 @@ const platforms = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    if (onClose && typeof window !== 'undefined' && window.innerWidth < 1024) {
+      onClose();
+    }
+  }, [pathname, onClose]);
+
+  // Prevent rendering on server to avoid hydration mismatch
+  if (!isMounted) {
+    return null;
+  }
 
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-background">
+    <>
+      {/* Mobile overlay */}
+      {isOpen && onClose && (
+        <div 
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div 
+        className={cn(
+          "flex h-full w-64 flex-col border-r bg-background transition-transform duration-300 ease-in-out",
+          "lg:translate-x-0 lg:static lg:inset-0",
+          "fixed inset-y-0 left-0 z-50",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
       <div className="flex-1 overflow-y-auto px-3 py-4">
         <nav className="space-y-2">
           {navigation.map((item) => {
@@ -121,5 +168,6 @@ export function Sidebar() {
         </Link>
       </div>
     </div>
+    </>
   );
 }

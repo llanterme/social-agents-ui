@@ -10,6 +10,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 import { loginSchema, type LoginFormData } from '@/lib/validations';
@@ -32,6 +33,14 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       clearError();
+      
+      // Store remember me preference
+      if (data.rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+      } else {
+        localStorage.removeItem('rememberMe');
+      }
+      
       await login(data);
       
       // Redirect to the intended page or dashboard
@@ -110,6 +119,20 @@ export function LoginForm() {
                 {errors.password.message}
               </p>
             )}
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="rememberMe"
+              {...register('rememberMe')}
+              disabled={isSubmitting || isLoading}
+            />
+            <Label 
+              htmlFor="rememberMe"
+              className="text-sm font-normal cursor-pointer"
+            >
+              Remember me for 30 days
+            </Label>
           </div>
         </CardContent>
 

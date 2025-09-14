@@ -138,64 +138,99 @@ export function GenerationForm({
   const canSubmit = isFormValid && !isGenerating && !isStartingGeneration;
 
   return (
-    <Card className={cn("w-full max-w-4xl mx-auto p-6", className)}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight">Generate Content</h1>
-          <p className="text-muted-foreground">
-            Create AI-powered content for your chosen platform. Fill in the details below to get started.
+    <div className={cn("w-full", className)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+        {/* Enhanced Header */}
+        <div className="text-center space-y-3 pb-2 border-b border-gray-100">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4">
+            <span className="text-2xl">✨</span>
+          </div>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Let&apos;s Create Something Amazing
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Tell us your topic and preferences, and we&apos;ll craft engaging, platform-optimized content with stunning visuals
           </p>
         </div>
 
-        {/* Generation Status */}
+        {/* Enhanced Generation Status */}
         {(isGenerating || isCompleted || isFailed) && (
-          <Card className="p-4 space-y-3">
+          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-2xl p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">
-                {isGenerating && 'Generating Content...'}
-                {isCompleted && 'Generation Complete!'}
-                {isFailed && 'Generation Failed'}
-              </h3>
+              <div className="flex items-center space-x-3">
+                {isGenerating && (
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+                {isCompleted && (
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-lg">✓</span>
+                  </div>
+                )}
+                {isFailed && (
+                  <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-lg">✗</span>
+                  </div>
+                )}
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {isGenerating && 'Creating Your Content...'}
+                  {isCompleted && 'Content Ready!'}
+                  {isFailed && 'Something Went Wrong'}
+                </h3>
+              </div>
               {activeTaskId && (
-                <span className="text-xs font-mono text-muted-foreground">
-                  Task: {activeTaskId}
+                <span className="text-xs font-mono bg-white/50 px-2 py-1 rounded-lg text-gray-600">
+                  ID: {activeTaskId.slice(-8)}
                 </span>
               )}
             </div>
 
-            {/* Progress Bar */}
+            {/* Enhanced Progress Bar */}
             {isGenerating && (
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Progress</span>
-                  <span>{progress}%</span>
+              <div className="bg-white rounded-xl p-4 space-y-3">
+                <div className="flex justify-between text-sm font-medium">
+                  <span className="text-gray-700">Generation Progress</span>
+                  <span className="text-blue-600">{progress}%</span>
                 </div>
-                <div className="w-full bg-secondary rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-3">
                   <div 
-                    className="bg-primary h-2 rounded-full transition-all duration-300" 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out" 
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  {currentStatus?.status === 'PENDING' && 'Queued for processing...'}
-                  {currentStatus?.status === 'IN_PROGRESS' && 'Creating content and images...'}
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span>
+                    {currentStatus?.status === 'PENDING' && 'Queued for processing...'}
+                    {currentStatus?.status === 'IN_PROGRESS' && 'Creating content and images...'}
+                  </span>
                 </div>
               </div>
             )}
 
-            {/* Success Message */}
+            {/* Enhanced Success Message */}
             {isCompleted && (
-              <div className="text-sm text-green-600">
-                Your content has been generated successfully! You'll be redirected to view the results.
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                <div className="flex items-center space-x-2 text-green-800">
+                  <span className="text-lg">🎉</span>
+                  <span className="font-medium">Your content has been generated successfully!</span>
+                </div>
+                <p className="text-green-700 text-sm mt-1 ml-7">You&apos;ll be redirected to view the results shortly.</p>
               </div>
             )}
 
-            {/* Error Message */}
+            {/* Enhanced Error Message */}
             {(isFailed || error) && (
-              <div className="space-y-2">
-                <div className="text-sm text-destructive">
-                  {error?.message || currentStatus?.error || 'An error occurred during generation.'}
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-3">
+                <div className="flex items-start space-x-2 text-red-800">
+                  <span className="text-lg">⚠️</span>
+                  <div>
+                    <p className="font-medium">Generation failed</p>
+                    <p className="text-sm text-red-700 mt-1">
+                      {error?.message || currentStatus?.error || 'An error occurred during generation.'}
+                    </p>
+                  </div>
                 </div>
                 <Button
                   type="button"
@@ -203,88 +238,107 @@ export function GenerationForm({
                   size="sm"
                   onClick={handleRetry}
                   disabled={!isFormValid}
+                  className="border-red-300 text-red-700 hover:bg-red-50"
                 >
-                  Retry Generation
+                  Try Again
                 </Button>
               </div>
             )}
 
-            {/* Cancel Button */}
+            {/* Enhanced Cancel Button */}
             {isGenerating && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleCancel}
-              >
-                Cancel Generation
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCancel}
+                  className="bg-white/50 hover:bg-white/80"
+                >
+                  Cancel Generation
+                </Button>
+              </div>
             )}
-          </Card>
+          </div>
         )}
 
-        {/* Form Fields */}
-        <div className="space-y-6">
-          <TopicInput
-            control={form.control}
-            name="topic"
-          />
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <PlatformSelector
+        {/* Enhanced Form Fields */}
+        <div className="space-y-8">
+          <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl p-8 space-y-8">
+            <TopicInput
               control={form.control}
-              name="platform"
+              name="topic"
             />
 
-            <ToneSelector
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <PlatformSelector
+                control={form.control}
+                name="platform"
+              />
+
+              <ToneSelector
+                control={form.control}
+                name="tone"
+              />
+            </div>
+
+            <ImageCountSelector
               control={form.control}
-              name="tone"
+              name="imageCount"
             />
           </div>
-
-          <ImageCountSelector
-            control={form.control}
-            name="imageCount"
-          />
         </div>
 
-        {/* Form Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t">
-          <Button
-            type="submit"
-            disabled={!canSubmit}
-            className="flex-1 sm:flex-initial sm:min-w-[200px]"
-          >
-            {isStartingGeneration && (
-              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
-            )}
-            {isStartingGeneration ? 'Starting Generation...' : 'Generate Content'}
-          </Button>
+        {/* Enhanced Form Actions */}
+        <div className="bg-gradient-to-r from-white to-gray-50 rounded-2xl p-6 border border-gray-100">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              type="submit"
+              disabled={!canSubmit}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed sm:min-w-[250px]"
+            >
+              {isStartingGeneration && (
+                <div className="mr-3 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              )}
+              {isStartingGeneration ? 'Starting Generation...' : '✨ Generate Content'}
+            </Button>
 
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleReset}
-            disabled={isGenerating || isStartingGeneration}
-          >
-            Reset Form
-          </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleReset}
+              disabled={isGenerating || isStartingGeneration}
+              className="px-6 py-3 rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50 font-medium"
+            >
+              Reset Form
+            </Button>
+          </div>
         </div>
 
-        {/* Form Validation Summary */}
+        {/* Enhanced Form Validation Summary */}
         {Object.keys(form.formState.errors).length > 0 && (
-          <Card className="p-4 border-destructive">
-            <h4 className="font-medium text-destructive mb-2">
-              Please fix the following errors:
-            </h4>
-            <ul className="text-sm text-destructive space-y-1">
-              {Object.entries(form.formState.errors).map(([field, error]) => (
-                <li key={field}>• {error.message}</li>
-              ))}
-            </ul>
-          </Card>
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-red-600 text-lg">⚠️</span>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-semibold text-red-800">
+                  Please fix the following errors:
+                </h4>
+                <ul className="text-sm text-red-700 space-y-1">
+                  {Object.entries(form.formState.errors).map(([field, error]) => (
+                    <li key={field} className="flex items-center space-x-2">
+                      <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
+                      <span>{error.message}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         )}
       </form>
-    </Card>
+    </div>
   );
 }

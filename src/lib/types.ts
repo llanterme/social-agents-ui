@@ -43,8 +43,7 @@ export interface GenerationRequest {
 export interface GenerationResult {
   topic: string;
   research: {
-    topic: string;
-    insights: string[];
+    points: string[];
     sources?: string[];
   };
   content: {
@@ -52,12 +51,13 @@ export interface GenerationResult {
     tone: string;
     headline: string;
     body: string;
-    cta: string;
-    hashtags: string[];
+    cta?: string;
+    hashtags?: string[];
   };
   image: {
     prompt: string;
     openAiImageUrls: string[];
+    localImagePaths?: string[];
     localImageUrls: string[];
   };
 }

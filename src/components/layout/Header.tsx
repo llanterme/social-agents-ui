@@ -2,11 +2,15 @@
 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import { LogOut, User, Sparkles } from 'lucide-react';
+import { LogOut, User, Sparkles, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const { user, logout, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
@@ -18,8 +22,21 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+        <div className="mr-4 flex items-center">
+          {/* Mobile menu button */}
+          {isAuthenticated && onMenuClick && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mr-2 lg:hidden"
+              onClick={onMenuClick}
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          )}
+          
+          <Link href="/" className="flex items-center space-x-2">
             <Sparkles className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block">
               AI Content Generator

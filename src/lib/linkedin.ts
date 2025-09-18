@@ -16,8 +16,7 @@ export interface LinkedInConnection {
 }
 
 export interface LinkedInPostRequest {
-  text: string;
-  imagePath?: string;
+  id: number;
 }
 
 export interface LinkedInPostResponse {

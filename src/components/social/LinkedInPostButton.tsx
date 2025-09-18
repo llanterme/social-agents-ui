@@ -7,16 +7,14 @@ import { useLinkedInPost, useLinkedInConnection } from '@/hooks/useLinkedIn';
 import { cn } from '@/lib/utils';
 
 interface LinkedInPostButtonProps {
-  content: string;
-  imagePath?: string;
+  contentId: number;
   onSuccess?: (postUrl: string) => void;
   onError?: (error: string) => void;
   className?: string;
 }
 
 export function LinkedInPostButton({
-  content,
-  imagePath,
+  contentId,
   onSuccess,
   onError,
   className
@@ -40,7 +38,7 @@ export function LinkedInPostButton({
 
     try {
       post(
-        { text: content, imagePath },
+        { id: contentId },
         {
           onSuccess: (data) => {
             setPostUrl(data.postUrl);
@@ -124,7 +122,7 @@ export function LinkedInPostButton({
   return (
     <Button
       onClick={handlePost}
-      disabled={isPosting || !content}
+      disabled={isPosting || !contentId}
       className={cn(
         "flex items-center space-x-2 bg-[#0077B5] hover:bg-[#006097]",
         className

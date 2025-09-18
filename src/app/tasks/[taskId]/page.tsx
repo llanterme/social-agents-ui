@@ -437,10 +437,9 @@ export default function TaskPage() {
                             </Button>
 
                             {/* LinkedIn Post Button */}
-                            {result.content.platform === 'linkedin' && (
+                            {result.content.platform === 'linkedin' && result.id && (
                               <LinkedInPostButton
-                                content={formatContentForLinkedIn()}
-                                imagePath={result.image?.localImageUrls?.[0]}
+                                contentId={result.id}
                                 onSuccess={(postUrl) => {
                                   setLinkedInPostSuccess(postUrl);
                                 }}

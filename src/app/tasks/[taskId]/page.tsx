@@ -9,8 +9,9 @@ import { useTaskTracking } from '@/hooks/useTaskTracking';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ImageModal } from '@/components/ui/image-modal';
-import { Loader2, ArrowLeft, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Loader2, ArrowLeft, CheckCircle, XCircle, Clock, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { LinkedInPostButton } from '@/components/social/LinkedInPostButton';
 
 export default function TaskPage() {
   const { user, isLoading, error } = useAuth();
@@ -24,6 +25,10 @@ export default function TaskPage() {
     alt: string;
     title?: string;
   } | null>(null);
+
+  // Copy state
+  const [copiedContent, setCopiedContent] = useState(false);
+  const [linkedInPostSuccess, setLinkedInPostSuccess] = useState<string | null>(null);
 
   const {
     currentStatus,
@@ -42,6 +47,38 @@ export default function TaskPage() {
       router.push('/generate');
     }
   }, [taskId, router]);
+
+  // Helper function to copy content
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedContent(true);
+    setTimeout(() => setCopiedContent(false), 2000);
+  };
+
+  // Helper function to format content for LinkedIn
+  const formatContentForLinkedIn = () => {
+    if (!result?.content) return '';
+
+    let formattedContent = '';
+
+    if (result.content.headline) {
+      formattedContent += result.content.headline + '\n\n';
+    }
+
+    if (result.content.body) {
+      formattedContent += result.content.body + '\n\n';
+    }
+
+    if (result.content.cta) {
+      formattedContent += result.content.cta + '\n\n';
+    }
+
+    if (result.content.hashtags && result.content.hashtags.length > 0) {
+      formattedContent += result.content.hashtags.join(' ');
+    }
+
+    return formattedContent.trim();
+  };
 
   // Show loading state while authentication is being checked
   if (isLoading) {
@@ -365,6 +402,54 @@ export default function TaskPage() {
                               </div>
                             </div>
                           )}
+                        </div>
+
+                        {/* Social Sharing Actions */}
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h6 className="text-sm font-semibold text-gray-900">Share Your Content</h6>
+                            {linkedInPostSuccess && (
+                              <span className="text-xs text-green-600 flex items-center space-x-1">
+                                <CheckCircle className="h-3 w-3" />
+                                <span>Posted to LinkedIn!</span>
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap gap-3">
+                            {/* Copy Content Button */}
+                            <Button
+                              onClick={() => copyToClipboard(formatContentForLinkedIn())}
+                              variant="outline"
+                              className="flex items-center space-x-2"
+                              disabled={!result.content}
+                            >
+                              {copiedContent ? (
+                                <>
+                                  <CheckCircle className="h-4 w-4 text-green-600" />
+                                  <span>Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="h-4 w-4" />
+                                  <span>Copy Content</span>
+                                </>
+                              )}
+                            </Button>
+
+                            {/* LinkedIn Post Button */}
+                            {result.content.platform === 'linkedin' && (
+                              <LinkedInPostButton
+                                content={formatContentForLinkedIn()}
+                                imagePath={result.image?.localImageUrls?.[0]}
+                                onSuccess={(postUrl) => {
+                                  setLinkedInPostSuccess(postUrl);
+                                }}
+                                onError={(error) => {
+                                  console.error('LinkedIn posting error:', error);
+                                }}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}

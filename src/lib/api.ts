@@ -1,11 +1,13 @@
 import { GenerationRequest, GenerationResult, TaskStatus } from './types';
 import { authService } from './auth';
 
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
 class ApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    this.baseUrl = API_BASE_URL;
   }
 
   async startGeneration(

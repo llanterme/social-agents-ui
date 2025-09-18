@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/context/AuthContext';
 import { QueryProvider } from '@/context/QueryProvider';
 import { ErrorBoundary } from '@/components/error/ErrorBoundary';
+import { LinkedInConnectionStatus } from '@/components/social/LinkedInConnectionStatus';
 import { Toaster } from 'sonner';
 import './globals.css';
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <QueryProvider>
             <AuthProvider>
               {children}
+              <LinkedInConnectionStatus />
               <Toaster />
             </AuthProvider>
           </QueryProvider>

@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { 
-  LayoutDashboard, 
-  Sparkles, 
-  FileText, 
-  History, 
+import {
+  LayoutDashboard,
+  Sparkles,
+  Library,
+  History,
   Settings,
   User,
   Twitter,
@@ -40,8 +40,8 @@ const navigation = [
   },
   {
     name: 'Content Library',
-    href: '/content',
-    icon: FileText,
+    href: '/library',
+    icon: Library,
   },
   {
     name: 'History',

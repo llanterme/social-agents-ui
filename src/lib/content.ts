@@ -8,8 +8,10 @@ export interface ContentItem {
   tone: string;
   imageCount: number;
   research: {
-    points: string[];
-    sources: string[];
+    topic?: string;
+    points?: string[];      // For task results format
+    sources?: string[];     // For task results format
+    insights?: string[];    // For library content format
   };
   content: {
     platform: string;

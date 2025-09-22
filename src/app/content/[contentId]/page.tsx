@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import Link from 'next/link';
 import { LinkedInPostButton } from '@/components/social/LinkedInPostButton';
+import { ResearchSection } from '@/components/content/ResearchSection';
 
 export default function ContentDetailsPage() {
   const { user, isLoading, error } = useAuth();
@@ -292,6 +293,11 @@ export default function ContentDetailsPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Research Insights */}
+                {content.research && (
+                  <ResearchSection research={content.research} />
+                )}
 
                 {/* Generated Content Display */}
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 space-y-6">

@@ -12,6 +12,7 @@ import { ImageModal } from '@/components/ui/image-modal';
 import { Loader2, ArrowLeft, CheckCircle, XCircle, Clock, Copy } from 'lucide-react';
 import Link from 'next/link';
 import { LinkedInPostButton } from '@/components/social/LinkedInPostButton';
+import { ResearchSection } from '@/components/content/ResearchSection';
 
 export default function TaskPage() {
   const { user, isLoading, error } = useAuth();
@@ -363,6 +364,11 @@ export default function TaskPage() {
                         </div>
                       )}
                     </div>
+
+                    {/* Research Insights */}
+                    {result.research && (
+                      <ResearchSection research={result.research} />
+                    )}
 
                     {/* Generated Content */}
                     {result.content && (

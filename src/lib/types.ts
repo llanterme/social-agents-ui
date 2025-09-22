@@ -44,7 +44,7 @@ export interface GenerationResult {
   topic: string;
   research: {
     points: string[];
-    sources?: string[];
+    sources: string[];
   };
   content: {
     platform: string;

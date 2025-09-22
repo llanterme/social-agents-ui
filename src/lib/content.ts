@@ -1,4 +1,5 @@
 import { API_BASE_URL } from './api';
+import { SafeStorage } from './storage';
 
 export interface ContentItem {
   id: number;
@@ -43,7 +44,7 @@ class ContentService {
         return [];
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required');
       }
@@ -77,7 +78,7 @@ class ContentService {
         throw new Error('Content can only be fetched on client side');
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required');
       }
@@ -114,7 +115,7 @@ class ContentService {
         throw new Error('Content can only be deleted on client side');
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required');
       }

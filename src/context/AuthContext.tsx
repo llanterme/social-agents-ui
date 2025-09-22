@@ -33,10 +33,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
       console.log('AuthContext: Initializing auth...');
-      
+
+      // Force re-initialization from storage
+      authService.reinitialize();
+
       // Wait for the browser to be ready and tokens to be loaded
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       console.log('AuthContext: Checking if authenticated:', authService.isAuthenticated());
       if (authService.isAuthenticated()) {
         try {
@@ -68,18 +71,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
       setError(null);
-      
-      await authService.login(request);
+
+      console.log('AuthContext: Starting login...');
+      const tokens = await authService.login(request);
+      console.log('AuthContext: Login returned tokens:', !!tokens.accessToken);
+
       // Wait a brief moment for the token to be stored
       await new Promise(resolve => setTimeout(resolve, 100));
+
+      console.log('AuthContext: Getting current user...');
       const userData = await authService.getCurrentUser();
+      console.log('AuthContext: User data received:', userData);
       setUser(userData);
+      console.log('AuthContext: User state set');
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('AuthContext: Login error:', err);
       setError(err instanceof Error ? err.message : 'Login failed');
       throw err;
     } finally {
       setIsLoading(false);
+      console.log('AuthContext: Login process complete');
     }
   };
 
@@ -135,7 +146,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value: AuthContextType = {
     user,
-    isAuthenticated: !!user && authService.isAuthenticated(),
+    isAuthenticated: !!user,
     isLoading,
     error,
     login,

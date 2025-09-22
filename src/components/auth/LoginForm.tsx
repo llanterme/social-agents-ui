@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import '@/lib/testAuth'; // Load test function
+import '@/lib/cleanupTool'; // Load cleanup tool
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,7 +20,8 @@ import { cn } from '@/lib/utils';
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, error, clearError } = useAuth();
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -30,25 +33,33 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
+  // Handle redirect after successful authentication
+  useEffect(() => {
+    if (loginSuccess && isAuthenticated && !isLoading) {
+      const redirectTo = searchParams.get('redirect') || '/dashboard';
+      console.log('Login successful, redirecting to:', redirectTo);
+      router.push(redirectTo);
+    }
+  }, [loginSuccess, isAuthenticated, isLoading, router, searchParams]);
+
   const onSubmit = async (data: LoginFormData) => {
     try {
       clearError();
-      
+      setLoginSuccess(false);
+
       // Store remember me preference
       if (data.rememberMe) {
         localStorage.setItem('rememberMe', 'true');
       } else {
         localStorage.removeItem('rememberMe');
       }
-      
+
       await login(data);
-      
-      // Redirect to the intended page or dashboard
-      const redirectTo = searchParams.get('redirect') || '/dashboard';
-      router.push(redirectTo);
+      setLoginSuccess(true);
     } catch (err) {
       // Error is handled by the AuthContext
       console.error('Login failed:', err);
+      setLoginSuccess(false);
     }
   };
 

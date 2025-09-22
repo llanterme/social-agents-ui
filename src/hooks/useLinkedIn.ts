@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { linkedInService, LinkedInConnectionStatus, LinkedInPostRequest, LinkedInPostResponse } from '@/lib/linkedin';
+import { SafeStorage } from '@/lib/storage';
 
 export function useLinkedInConnection() {
   const [isConnecting, setIsConnecting] = useState(false);
@@ -13,7 +14,7 @@ export function useLinkedInConnection() {
   useEffect(() => {
     const checkToken = () => {
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('accessToken');
+        const token = SafeStorage.getItem('accessToken');
         setHasToken(!!token);
       }
     };
@@ -43,7 +44,7 @@ export function useLinkedInConnection() {
     queryKey: ['linkedin-connection-status'],
     queryFn: async () => {
       // Double-check token exists before calling service
-      if (typeof window === 'undefined' || !localStorage.getItem('accessToken')) {
+      if (typeof window === 'undefined' || !SafeStorage.getItem('accessToken')) {
         return { connected: false, message: 'Not authenticated' };
       }
       return linkedInService.checkConnectionStatus();

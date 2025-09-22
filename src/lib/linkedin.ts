@@ -1,4 +1,5 @@
 import { API_BASE_URL } from './api';
+import { SafeStorage } from './storage';
 
 export interface LinkedInConnectionStatus {
   connected: boolean;
@@ -39,7 +40,7 @@ class LinkedInService {
         return { connected: false, message: 'Server-side rendering' };
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         // Return a default state instead of throwing
         return { connected: false, message: 'Not authenticated' };
@@ -94,7 +95,7 @@ class LinkedInService {
         return [];
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         return [];
       }
@@ -125,7 +126,7 @@ class LinkedInService {
         throw new Error('LinkedIn connection can only be initiated on client side');
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required to connect LinkedIn');
       }
@@ -163,7 +164,7 @@ class LinkedInService {
         throw new Error('LinkedIn disconnection can only be done on client side');
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required to disconnect LinkedIn');
       }
@@ -195,7 +196,7 @@ class LinkedInService {
         throw new Error('LinkedIn posting can only be done on client side');
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = SafeStorage.getItem('accessToken');
       if (!token) {
         throw new Error('Authentication required to post to LinkedIn');
       }

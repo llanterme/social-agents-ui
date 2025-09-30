@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { User, Mail, Calendar, Shield, Edit2, Save, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LinkedInConnection } from './LinkedInConnection';
 
 interface EditableFieldProps {
   label: string;
@@ -297,6 +298,12 @@ export function UserProfile() {
             </div>
           </div>
         </Card>
+      </div>
+
+      {/* Social Connections Section */}
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Social Connections</h2>
+        <LinkedInConnection />
       </div>
     </div>
   );

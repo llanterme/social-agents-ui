@@ -1,0 +1,51 @@
+{
+    "id": "845808a8-18ba-43f7-8c3a-402e3740ebb7",
+    "request": {
+        "topic": "Artificial Intelligence",
+        "platform": "twitter",
+        "tone": "professional",
+        "imageCount": 1
+    },
+    "status": "COMPLETED",
+    "result": {
+        "topic": "Artificial Intelligence",
+        "research": {
+            "points": [
+                "BLS projects a 17.9% increase in software developer jobs from 2023 to 2033 due to AI. [https://www.bls.gov/opub/ted/2025/ai-impacts-in-bls-employment-projections.htm]",
+                "In May 2023, AI was responsible for 3,900 job losses in the U.S., ranking as the seventh-largest job eliminator. [https://www.nu.edu/blog/ai-job-statistics/]",
+                "Goldman Sachs estimates AI could affect 25% of the global labor market, potentially impacting 300 million jobs. [https://www.forbes.com/sites/jackkelly/2025/04/25/the-jobs-that-will-fall-first-as-ai-takes-over-the-workplace/]",
+                "AI systems pose ethical challenges, including bias amplification and privacy concerns. [https://www.shs-conferences.org/articles/shsconf/pdf/2023/28/shsconf_ichess2023_04024.pdf]",
+                "UNESCO's 'Recommendation on the Ethics of Artificial Intelligence' was the first global AI ethics standard, released in November 2021. [https://www.unesco.org/en/artificial-intelligence/recommendation-ethics]"
+            ],
+            "sources": [
+                "https://www.bls.gov/opub/ted/2025/ai-impacts-in-bls-employment-projections.htm",
+                "https://www.nu.edu/blog/ai-job-statistics/",
+                "https://www.forbes.com/sites/jackkelly/2025/04/25/the-jobs-that-will-fall-first-as-ai-takes-over-the-workplace/",
+                "https://www.shs-conferences.org/articles/shsconf/pdf/2023/28/shsconf_ichess2023_04024.pdf",
+                "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics"
+            ]
+        },
+        "content": {
+            "platform": "twitter",
+            "tone": "professional",
+            "headline": "AI's Dual Impact on Jobs",
+            "body": "AI is reshaping the job market. BLS forecasts a 17.9% rise in software developer roles by 2033, yet AI also cut 3,900 jobs in May '23. Ethical challenges remain. #AI #JobMarket",
+            "cta": ""
+        },
+        "image": {
+            "prompt": "Futuristic office setting with diverse professionals interacting with AI technology, editorial style, balanced lighting, thought-provoking and dynamic mood, no text",
+            "openAiImageUrls": [],
+            "localImagePaths": [
+                "/Users/lukelanterme/Documents/Code/Personal/POC/java-ai-agents/./generated-images/20250922_090613_artificial_intelligence_f5fd9e53.png"
+            ],
+            "localImageUrls": [
+                "http://localhost:8080/generated-image/20250922_090613_artificial_intelligence_f5fd9e53.png"
+            ]
+        },
+        "id": 9
+    },
+    "createdAt": "2025-09-22T09:05:43.57201",
+    "updatedAt": "2025-09-22T09:06:23.438877",
+    "completedAt": "2025-09-22T09:06:23.438879",
+    "completed": true
+}

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
@@ -12,6 +13,12 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '8080',
+        pathname: '/generated-image/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*',
+        port: '',
         pathname: '/generated-image/**',
       },
     ],

@@ -443,17 +443,7 @@ export default function TaskPage() {
                             </Button>
 
                             {/* LinkedIn Post Button */}
-                            {result.content.platform === 'linkedin' && result.id && (
-                              <LinkedInPostButton
-                                contentId={result.id}
-                                onSuccess={(postUrl) => {
-                                  setLinkedInPostSuccess(postUrl);
-                                }}
-                                onError={(error) => {
-                                  console.error('LinkedIn posting error:', error);
-                                }}
-                              />
-                            )}
+                            {/* Note: LinkedIn posting requires content to be saved first */}
                           </div>
                         </div>
                       </div>

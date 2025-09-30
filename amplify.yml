@@ -6,7 +6,6 @@ frontend:
         - node --version
         - npm --version
         - ls -la package*
-        - rm -rf node_modules package-lock.json
         - npm ci
         - echo "Direct dependencies:"
         - npm ls --depth=0

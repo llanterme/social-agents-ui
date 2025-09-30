@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - npm install --legacy-peer-deps
     build:
       commands:
         - npm run build
@@ -15,8 +15,3 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-  buildSpec:
-    env:
-      variables:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-        NODE_ENV: production

@@ -7,7 +7,7 @@ frontend:
         - npm --version
         - ls -la package*
         - rm -rf node_modules package-lock.json
-        - NODE_ENV=development npm install
+        - npm ci
         - echo "Direct dependencies:"
         - npm ls --depth=0
         - echo "Total packages in node_modules:"

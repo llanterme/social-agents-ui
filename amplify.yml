@@ -8,7 +8,12 @@ frontend:
         - ls -la package*
         - rm -rf node_modules package-lock.json
         - npm install
+        - echo "Direct dependencies:"
         - npm ls --depth=0
+        - echo "Total packages in node_modules:"
+        - find node_modules -maxdepth 1 -type d | wc -l
+        - echo "Key packages check:"
+        - ls node_modules | grep -E "(next|react|typescript)" || true
     build:
       commands:
         - npm run build

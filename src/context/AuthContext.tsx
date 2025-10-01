@@ -34,35 +34,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsLoading(true);
       console.log('AuthContext: Initializing auth...');
 
+      // Check localStorage before reinitializing
+      const accessTokenBefore = localStorage.getItem('accessToken');
+      const refreshTokenBefore = localStorage.getItem('refreshToken');
+      console.log('AuthContext: Tokens in localStorage BEFORE reinitialize:', {
+        accessToken: !!accessTokenBefore,
+        refreshToken: !!refreshTokenBefore
+      });
+
       // Force re-initialization from storage
       authService.reinitialize();
-
-      // Wait for the browser to be ready and tokens to be loaded
-      await new Promise(resolve => setTimeout(resolve, 100));
 
       console.log('AuthContext: Checking if authenticated:', authService.isAuthenticated());
       if (authService.isAuthenticated()) {
         try {
+          console.log('AuthContext: Fetching current user...');
           const userData = await authService.getCurrentUser();
-          console.log('AuthContext: User data retrieved:', userData);
+          console.log('AuthContext: User data retrieved successfully:', userData);
           setUser(userData);
         } catch (userError) {
-          console.error('Failed to get current user:', userError);
+          console.error('AuthContext: Failed to get current user:', userError);
           // If getting user data fails, clear tokens
           await authService.logout();
           setUser(null);
         }
       } else {
-        console.log('AuthContext: Not authenticated');
+        console.log('AuthContext: Not authenticated (no valid tokens)');
         setUser(null);
       }
     } catch (err) {
-      console.error('Auth initialization failed:', err);
+      console.error('AuthContext: Auth initialization failed:', err);
       // Don't set error for initialization failures as user might not be logged in
       authService.logout(); // Clear any invalid tokens
       setUser(null);
     } finally {
-      console.log('AuthContext: Auth initialization complete. Loading:', false);
+      console.log('AuthContext: Auth initialization complete. isLoading set to false');
       setIsLoading(false);
     }
   };
@@ -76,21 +82,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const tokens = await authService.login(request);
       console.log('AuthContext: Login returned tokens:', !!tokens.accessToken);
 
-      // Wait a brief moment for the token to be stored
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Verify tokens were stored to localStorage
+      const storedAccessToken = localStorage.getItem('accessToken');
+      const storedRefreshToken = localStorage.getItem('refreshToken');
+      console.log('AuthContext: Tokens stored in localStorage:', {
+        accessToken: !!storedAccessToken,
+        refreshToken: !!storedRefreshToken
+      });
+
+      if (!storedAccessToken || !storedRefreshToken) {
+        throw new Error('Failed to store authentication tokens');
+      }
 
       console.log('AuthContext: Getting current user...');
       const userData = await authService.getCurrentUser();
       console.log('AuthContext: User data received:', userData);
+
+      // Update lastActivity timestamp to prevent session timeout on fresh login
+      localStorage.setItem('lastActivity', Date.now().toString());
+      console.log('AuthContext: Updated lastActivity timestamp');
+
       setUser(userData);
-      console.log('AuthContext: User state set');
+      console.log('AuthContext: User state set, isAuthenticated will be:', !!userData);
     } catch (err) {
       console.error('AuthContext: Login error:', err);
       setError(err instanceof Error ? err.message : 'Login failed');
       throw err;
     } finally {
       setIsLoading(false);
-      console.log('AuthContext: Login process complete');
+      console.log('AuthContext: Login process complete, isLoading set to false');
     }
   };
 
@@ -98,11 +118,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       await authService.register(request);
       // Wait a brief moment for the token to be stored
       await new Promise(resolve => setTimeout(resolve, 100));
       const userData = await authService.getCurrentUser();
+
+      // Update lastActivity timestamp to prevent session timeout on fresh registration
+      localStorage.setItem('lastActivity', Date.now().toString());
+
       setUser(userData);
     } catch (err) {
       console.error('Registration error:', err);

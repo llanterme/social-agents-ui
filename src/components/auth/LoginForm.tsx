@@ -20,8 +20,7 @@ import { cn } from '@/lib/utils';
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
+  const { login, isLoading, error, clearError } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -33,19 +32,9 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Handle redirect after successful authentication
-  useEffect(() => {
-    if (loginSuccess && isAuthenticated && !isLoading) {
-      const redirectTo = searchParams.get('redirect') || '/dashboard';
-      console.log('Login successful, redirecting to:', redirectTo);
-      router.push(redirectTo);
-    }
-  }, [loginSuccess, isAuthenticated, isLoading, router, searchParams]);
-
   const onSubmit = async (data: LoginFormData) => {
     try {
       clearError();
-      setLoginSuccess(false);
 
       // Store remember me preference
       if (data.rememberMe) {
@@ -54,12 +43,15 @@ export function LoginForm() {
         localStorage.removeItem('rememberMe');
       }
 
+      console.log('LoginForm: Starting login process...');
       await login(data);
-      setLoginSuccess(true);
+      console.log('LoginForm: Login completed successfully');
+
+      // Let PublicRoute handle the redirect automatically
+      // No need for manual redirect here
     } catch (err) {
       // Error is handled by the AuthContext
       console.error('Login failed:', err);
-      setLoginSuccess(false);
     }
   };
 

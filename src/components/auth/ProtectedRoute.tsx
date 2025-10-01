@@ -79,12 +79,19 @@ interface PublicRouteProps {
 export function PublicRoute({ children, redirectTo = '/dashboard' }: PublicRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push(redirectTo);
+      // Check if there's a redirect parameter in the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect');
+      const targetUrl = redirect || redirectTo;
+
+      console.log('PublicRoute: User authenticated, redirecting to:', targetUrl);
+      router.push(targetUrl);
     }
-  }, [isAuthenticated, isLoading, router, redirectTo]);
+  }, [isAuthenticated, isLoading, router, redirectTo, pathname]);
 
   if (isLoading) {
     return (
